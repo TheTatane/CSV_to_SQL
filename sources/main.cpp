@@ -11,9 +11,16 @@
 int main(int argc, const char * argv[])
 {
 
-	string name = string(argv[1]);
-	Result R1(name);
-	R1.add();
-
+	if(argc<2)
+	{
+		cout << "Error : Mandatory arguments absent.\n";
+	}
+	else
+	{
+		string name = string(argv[1]);
+		Result R1(name);
+		R1.add();
+	}
+	
 	return 0;
 }

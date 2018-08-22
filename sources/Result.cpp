@@ -8,10 +8,9 @@
 
 #include "Result.hpp"
 
-Result::Result()
-{
+Result::Result() { }
 
-}
+Result::~Result() { }
 
 Result::Result(string csv) : _CSVname(csv), _nbElements(0)
 {
@@ -20,8 +19,6 @@ Result::Result(string csv) : _CSVname(csv), _nbElements(0)
 	displayTab();
 	concat();
 }
-
-Result::~Result() { }
 
 void Result::init_date()
 {
@@ -40,8 +37,7 @@ void Result::init_date()
 void Result::init_config()
 {
 	cout <<"Recupération du fichier config..."<<endl;
-	string line;
-	string champ;
+	string line, champ;
 	bool okEnd=true,okFirst=true;
 	int cpt=0;
 	ifstream(fic2);
@@ -87,12 +83,7 @@ void Result::concat()
 {
 	_contatChamp+="(";
 	for(int i = 1; i < _tabChamp.size(); i++)
-	{
-		if(i+1==_tabChamp.size())
-			_contatChamp+=_tabChamp[i];
-		else
-			_contatChamp+=_tabChamp[i]+",";
-	}
+		(i+1==_tabChamp.size()) ?	_contatChamp+=_tabChamp[i] : _contatChamp+=_tabChamp[i]+",";
 	_contatChamp+=")";
 }
 
@@ -100,28 +91,14 @@ void Result::add()
 {
 	//cout<<"Debut de la convertion ...\n";
 	//cout<<"chaine concat: "<<_contatChamp<<endl;
-	string ligneN;
-	string ligneF;
-	string champ;
-	string id;
-	bool okFirst;
+	string lineTemp,lineFinal;
 	ifstream fichier(_CSVname+".txt", ios::in | ios::binary);
 
-	while (getline(fichier,ligneN))
+	while (getline(fichier,lineTemp))
 	{
-		okFirst=true;
-		istringstream fic2(ligneN);
-		while (getline(fic2,champ,',') && okFirst && _systemOK)
-		{
-					//cout << champ<<endl;
-			okFirst=false;
-			id=champ;
-		}
-		ligneF+=ligneN;
-		_resul+="\n INSERT IGNORE INTO "+_tabChamp[0]+""+_contatChamp+"VALUES ("+ligneF+");";
-		/*	if (_systemOK)
-				_resul+="\n UPDATE "+_tabChamp[0]+" SET last_int_dt=\""+_date+"\" WHERE system_id="+id+";";*/
-			ligneF="";
+		lineFinal+=lineTemp;
+		_resul+="\n INSERT INTO "+_tabChamp[0]+""+_contatChamp+"VALUES ("+lineFinal+");";
+		lineFinal="";
 	}
 
 	ofstream fichierOut(""+_CSVname+"_INSERT.sql", ios::out);
