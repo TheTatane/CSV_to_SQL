@@ -32,14 +32,19 @@ private:
 	string _configName;
 	string _contatChamp;
 	string _date;
+	char _delimiter;
 	bool _systemOK;
+	bool _display;
 
 public:
 
 	Result();
-	Result(string csv);
 	~Result();
+	void make(string csv);
+	void make(string csv, bool display);
+	void make(string csv, bool display, char delimiter);
 	void add();
+	void init();
 	void init_date();
 	void init_config();
 	void concat();

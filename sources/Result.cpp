@@ -8,15 +8,39 @@
 
 #include "Result.hpp"
 
-Result::Result() { }
+Result::Result() : _nbElements(0) { }
 
 Result::~Result() { }
 
-Result::Result(string csv) : _CSVname(csv), _nbElements(0)
+void Result::make(string csv)
+{
+	_CSVname=csv;
+	init();
+}
+
+void Result::make(string csv, bool display)
+{
+	_CSVname=csv;
+	_display=display;
+	init();
+}
+
+void Result::make(string csv, bool display,  char delimiter)
+{
+	_CSVname=csv;
+	_display=display;
+	_delimiter=delimiter;
+	init();
+}
+
+void Result::init()
 {
 	init_config();
-	cout << "Starting creation of the object result..."<<endl;
-	displayTab();
+	if(_display)
+	{
+		cout << "Starting creation of the object result..."<<endl;
+		displayTab();
+	}
 	concat();
 }
 
@@ -36,7 +60,9 @@ void Result::init_date()
 
 void Result::init_config()
 {
-	cout <<"Recupération du fichier config..."<<endl;
+	if(_display)
+		cout <<"Recupération du fichier config..."<<endl;
+
 	string line, champ;
 	bool okEnd=true,okFirst=true;
 	int cpt=0;
@@ -66,7 +92,6 @@ void Result::init_config()
 					cpt++;
 				}
 			}
-
 		}
 	}
 	else
@@ -89,8 +114,12 @@ void Result::concat()
 
 void Result::add()
 {
-	//cout<<"Debut de la convertion ...\n";
-	//cout<<"chaine concat: "<<_contatChamp<<endl;
+	if(_display)
+	{
+		cout<<"Debut de la convertion ...\n";
+		cout<<"chaine concat: "<<_contatChamp<<endl;
+	}
+
 	string lineTemp,lineFinal;
 	ifstream fichier(_CSVname+".txt", ios::in | ios::binary);
 
@@ -105,6 +134,6 @@ void Result::add()
 	fichierOut << _resul;
 	fichier.close();
 
-	//cout<<"Convertion terminé ...\n";
+		cout<<"Done.\n";
 
 }
