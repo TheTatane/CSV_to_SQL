@@ -33,7 +33,7 @@ private:
 	string _contatChamp;
 	string _date;
 	char _delimiter;
-	bool _systemOK;
+	bool _table_arg_ok;
 	bool _display;
 
 public:

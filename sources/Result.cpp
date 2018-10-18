@@ -8,7 +8,7 @@
 
 #include "Result.hpp"
 
-Result::Result() : _nbElements(0) { }
+Result::Result() : _nbElements(0), _table_arg_ok(false) { }
 
 Result::~Result() { }
 
@@ -36,12 +36,22 @@ void Result::make(string csv, bool display,  char delimiter)
 void Result::init()
 {
 	init_config();
-	if(_display)
+
+	if(_table_arg_ok)
 	{
-		cout << "Starting creation of the object result..."<<endl;
-		displayTab();
+		if(_display)
+		{
+			cout << "Starting creation of the object result...\n";
+			displayTab();
+		}
+		concat();
 	}
-	concat();
+	else
+	{
+		cout <<"Error : No table called '"+_CSVname+"' in config.txt \nThe program can't proceed. \n";
+		exit(0);
+	}
+
 }
 
 void Result::init_date()
@@ -92,6 +102,9 @@ void Result::init_config()
 					cpt++;
 				}
 			}
+			if (okFirst)
+				_table_arg_ok=true;
+
 		}
 	}
 	else
